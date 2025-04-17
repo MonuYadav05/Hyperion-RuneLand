@@ -23,7 +23,7 @@ export default function AchievementDialog({
 }: AchievementDialogProps) {
   const [isMinting, setIsMinting] = useState(false);
   const { toast } = useToast();
-  const { signer } = useUnisatWallet();
+  const { signer, setIsGoldTokenMinted, setTxid,txid } = useUnisatWallet();
 
   // Pause game when dialog opens
   useEffect(() => {
@@ -75,14 +75,16 @@ export default function AchievementDialog({
         autoFinalized: true
       })
 
-      const txid = await window.unisat.pushPsbt(signedPsbt)
-      console.log('Mint transaction broadcasted with txid:', txid)
+      const Tokentxid = await window.unisat.pushPsbt(signedPsbt)
+      setTxid(Tokentxid);
+      console.log('Mint transaction broadcasted with txid:', Tokentxid)
 
       toast({
         title: "Achievement Unlocked!",
         description: "Successfully minted your Rune Token!",
         variant: "default",
       });
+      setIsGoldTokenMinted(true);
       handleClose();
     } catch (error) {
       console.error("Error minting  Rune Token :", error);

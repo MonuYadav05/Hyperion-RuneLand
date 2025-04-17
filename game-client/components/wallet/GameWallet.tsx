@@ -4,7 +4,7 @@ import { useGameWallet } from '@/hooks/useGameWallet';
 import { useUnisatWallet } from '@/hooks/useUnisatWallet';
 
 export default function GameWallet() {
-  const { balance, isLoading, error } = useGameWallet();
+  const { balance, isLoading } = useGameWallet();
   const { address } = useUnisatWallet();
 
   return (
@@ -36,13 +36,15 @@ export default function GameWallet() {
 
         <div className="flex-1">
           <div className="text-sm text-gray-400">Token Balance</div>
-          {error ? (
-            <div className="text-sm text-red-400 mt-1">{error}</div>
-          ) : (
+          {isLoading?(
             <div className="text-2xl font-bold text-white">
-              {balance.toFixed(2)} CoA
+              Loading...
             </div>
-          )}
+          ) :<div className="text-2xl font-bold text-white">
+          {balance.toFixed(2)} CoA
+        </div>}
+            
+          
           {!address && (
             <div className="text-sm text-gray-400 mt-1">
               Connect wallet to view balance

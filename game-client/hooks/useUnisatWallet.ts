@@ -15,6 +15,8 @@ export function useUnisatWallet() {
   const [authenticated, setAuthenticated] = useState(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isGoldTokenMinted, setIsGoldTokenMinted] = useState(false);
+  const [txid, setTxid] = useState<string | null>(null);
 
   // Check if Unisat is installed
   useEffect(() => {
@@ -113,5 +115,9 @@ export function useUnisatWallet() {
     balance,
     transactions,
     signer: getSigner,
+    isGoldTokenMinted,
+    setIsGoldTokenMinted,
+    txid,
+    setTxid,
   };
 }

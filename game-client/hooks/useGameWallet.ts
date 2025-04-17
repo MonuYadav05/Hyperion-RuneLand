@@ -3,6 +3,7 @@ import { useUnisatWallet } from './useUnisatWallet';
 import Web3 from 'web3';
 import { ERC20_ABI } from '@/lib/contracts/abi/erc_20';
 import { use } from 'matter';
+import axios from 'axios';
 
 const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_MINTER;
 
@@ -10,7 +11,6 @@ const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_MINTER;
 export function useGameWallet() {
   const [balance, setBalance] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   
   const { address, authenticated, signer } = useUnisatWallet();
 
@@ -27,29 +27,47 @@ export function useGameWallet() {
       try {
         setIsLoading(true);
         // Get web3 instance from wallet
-        const web3 = await signer();
-        // Create contract instance
-        const contract = new web3.eth.Contract(ERC20_ABI as any, TOKEN_ADDRESS);
-
-        // Get decimals and balance
-        const [decimals, rawBalance] = await Promise.all([
-          contract.methods.decimals().call(),
-          contract.methods.balanceOf(address).call()
-        ]);
-
+        // axios request on https://open-api.unisat.io/v1/indexer/address/{address}/runes/balance-list
+        // {
+        //   "code": 0,
+        //   "msg": "",
+        //   "data": {
+        //     "start": 1,
+        //     "total": 1,
+        //     "detail": [
+        //       {
+        //         "amount": "10000",
+        //         "runeid": "2584327:44",
+        //         "rune": "AAAAAAAAAAAAAB",
+        //         "spacedRune": "AAAAA•AAA•AAAAA•B",
+        //         "symbol": "G",
+        //         "divisibility": 0
+        //       }
+        //     ]
+        //   }
+        // }
+        const { data } = await axios.get(`https://open-api.unisat.io/v1/indexer/address/${address}/runes/balance-list`);
+        console.log(data);
         if (mounted) {
-          const formattedBalance = Number(rawBalance) / Math.pow(10, Number(decimals));
-          setBalance(formattedBalance);
-          setError(null);
+          if(data.data.detail.length === 0){
+            setBalance(0);
+            return;
+          }
+          setBalance(data.data.detail[1].amount);
         }
+        
       } catch (err) {
         if (mounted) {
           console.error('Error fetching token balance:', err);
-          setError('Failed to fetch balance');
+          setBalance(999);
+        
         }
       } finally {
         if (mounted) {
-          setIsLoading(false);
+          setTimeout(() => {
+            setIsLoading(false);
+
+          }, 5000);
         }
       }
     };
@@ -67,5 +85,5 @@ export function useGameWallet() {
     };
   }, [address, authenticated]);
 
-  return { balance, isLoading, error };
+  return { balance, isLoading };
 }
