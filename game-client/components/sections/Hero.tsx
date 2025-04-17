@@ -18,36 +18,36 @@ const Hero: FC = () => {
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#1a1510]/50 to-[#1a1510]" />
-      
+
       {/* Content */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="relative z-10 text-center px-4 max-w-4xl mx-auto"
       >
         <div className="space-y-8">
-          <motion.h1 
+          <motion.h1
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-6xl md:text-8xl font-bold"
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#d4a373] via-[#ccd5ae] to-[#e9edc9]">
-              Aura Land
+              Hyperion RuneLand
             </span>
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-xl md:text-2xl text-[#ccd5ae] max-w-2xl mx-auto leading-relaxed"
           >
-            Chainless Conquests: Where NFTs Battle Across Realms, Rarity Reigns, and Legends are SoulBound.
+            Chainless Conquests: Where Runes Battle Across Realms, Rarity Reigns, and Legends are SoulBound.
           </motion.p>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
@@ -68,7 +68,7 @@ const Hero: FC = () => {
                 Launch Game
               </Button>
             )}
-            
+
             <Button
               variant="outline"
               className="border-[#d4a373] text-[#d4a373] hover:bg-[#d4a373]/10"
