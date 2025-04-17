@@ -10,17 +10,12 @@ import dayjs from 'dayjs';
 import axios from "axios";
 
 
-interface EtchRecord {
-  runeId: string;
-  txid: string;
-  timestamp: number;
-}
 
 const Hero: FC = () => {
   const { connect: login, authenticated, logout } = useUnisatWallet();
   const router = useRouter();
   const [startEtching, setStartEtching] = useState(false);
-  const [etches, setEtches] = useState<EtchRecord[]>([]);
+  const [etches, setEtches] = useState<string[]>(["e7779d90ce8e70ced6119a4d71fe831ef325e648d7ee7b4823f9973c13d57402", "cfde24580653a01bc4be872c04b271e21bea207d996067e3d65257ecd8552a97"]);
   const [name, setName] = useState('');
   const [cap, setCap] = useState('');
   const [amount, setAmount] = useState('');
@@ -123,6 +118,45 @@ const Hero: FC = () => {
   };
 
 
+  async function getTxIndexInBlock(txid: String) {
+    try {
+      // Step 1: Get transaction details
+      const txDetailsRes = await axios.get(
+        `https://mempool.space/testnet/api/tx/${txid}`
+      )
+      // @ts-ignore
+      const { status } = txDetailsRes.data
+
+      if (!status || !status.block_height) {
+        throw new Error('Transaction not yet confirmed in a block.')
+      }
+
+      const blockHeight = status.block_height
+      const blockHash = status.block_hash
+
+      // Step 2: Get txids in that block
+      const blockTxsRes = await axios.get(
+        `https://mempool.space/testnet/api/block/${blockHash}/txids`
+      )
+
+      const txids = blockTxsRes.data
+      // @ts-ignore
+      const index = txids.indexOf(txid)
+      if (index === -1) {
+        throw new Error('Transaction not found in block.')
+      }
+
+      return {
+        txid,
+        blockHeight,
+        index
+      }
+    } catch (error) {
+      // @ts-ignore
+      console.error('Error fetching tx index:', error.message)
+      return null
+    }
+  }
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -263,28 +297,34 @@ const Hero: FC = () => {
 
               {/* Etched Token Cards */}
               <section className="max-w-5xl mx-auto mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {txnId && (
+                {etches.map((txid) => (
                   <motion.div
-                    key={1}
+                    key={txid}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
                     className="bg-[#2a221b] rounded-2xl p-6 shadow-md border border-[#d4a373]/30"
                   >
+                    <h3 className="text-lg font-bold text-[#e9edc9] mb-1">
+                      {/* @ts-ignore */}
+                      🧿 Rune ID:
+                    </h3>
+
+                    <p className="text-sm text-[#fefae0] font-mono mb-3 break-words">{txid}</p>
 
                     <p className="text-sm text-[#ccd5ae] mb-3">
                       ⏱️ Etched on{' '}
-                      <time dateTime={new Date(Date.now()).toISOString()}>
-                        {dayjs(Date.now()).format('MMMM D, YYYY h:mm A')}
+                      <time dateTime={new Date(1744914487).toISOString()}>
+                        {dayjs(1744914487).format('MMMM D, YYYY h:mm A')}
                       </time>
                     </p>
 
                     <p className="text-xs text-[#999] font-mono mb-4 break-all">
-                      {txnId}
+                      {txid}
                     </p>
 
                     <a
-                      href={`https://mempool.space/testnet/tx/${txnId}`}
+                      href={`https://mempool.space/testnet/tx/${txid}`}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-block bg-[#d4a373] text-[#1a1510] px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-all"
@@ -292,9 +332,9 @@ const Hero: FC = () => {
                       View on Explorer
                     </a>
                   </motion.div>
-                )}
+                ))}
 
-                {txnId === null && (
+                {etches.length === 0 && (
                   <p className="col-span-full text-center text-[#ccd5ae]">
                     No etches yet — be the first!
                   </p>

@@ -61,9 +61,9 @@ export default function GamePage() {
     const handleGoldUpdate = (event: CustomEvent) => {
       const newGold = event.detail.gold;
       setPlayerGold(newGold);
-      
+
       // Check for 250 gold achievement
-      if (newGold == 250 && !showGoldAchievement) {
+      if (newGold == 50 && !showGoldAchievement) {
         setShowGoldAchievement(true);
       }
     };
@@ -103,37 +103,37 @@ export default function GamePage() {
         {/* Main content */}
         <div className="relative z-10 flex w-full h-full">
           {/* Game Container with centering wrapper */}
-          <motion.div 
+          <motion.div
             className="relative"
-            animate={{ 
+            animate={{
               width: isBattling ? '100%' : '70%',
             }}
-            transition={{ 
-              duration: 0.5, 
-              ease: "easeInOut" 
+            transition={{
+              duration: 0.5,
+              ease: "easeInOut"
             }}
           >
             {/* Game Canvas Container */}
-            <motion.div 
+            <motion.div
               className="h-full relative"
-              animate={{ 
+              animate={{
                 width: isBattling ? '100%' : '100%',
                 left: isBattling ? '50%' : '0%',
                 x: isBattling ? '-50%' : '0%',
               }}
-              transition={{ 
-                duration: 0.5, 
+              transition={{
+                duration: 0.5,
                 ease: "easeInOut",
               }}
             >
-              <div className="h-full" style={{ 
-                width: isBattling ? '100%' : '100%', 
+              <div className="h-full" style={{
+                width: isBattling ? '100%' : '100%',
                 margin: isBattling ? '0 auto' : '0',
                 justifyContent: isBattling ? 'center' : 'flex-start',
                 alignSelf: isBattling ? 'center' : 'flex-start',
               }}>
-                <GameCanvas 
-                  isPaused={isGamePaused} 
+                <GameCanvas
+                  isPaused={isGamePaused}
                   onPause={() => setIsGamePaused(true)}
                   onResume={() => setIsGamePaused(false)}
                   onOpenTrade={(npcName: string) => {
@@ -141,19 +141,19 @@ export default function GamePage() {
                     setShowTradeDialog(true);
                   }}
                 />
-              </div>  
+              </div>
             </motion.div>
           </motion.div>
 
           {/* Sidebar */}
-          <motion.div 
+          <motion.div
             className="w-[30%] min-w-[300px] h-full bg-black bg-opacity-50 flex flex-col"
-            animate={{ 
+            animate={{
               x: isBattling ? '100%' : 0,
               opacity: isBattling ? 0 : 1
             }}
-            transition={{ 
-              duration: 0.5, 
+            transition={{
+              duration: 0.5,
               ease: "easeInOut",
               opacity: { duration: 0.3 }
             }}

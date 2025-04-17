@@ -22,7 +22,6 @@ export default function AchievementDialog({
   onGameResume,
 }: AchievementDialogProps) {
   const [isMinting, setIsMinting] = useState(false);
-  const { mintSoulboundNFT } = useBlockchain();
   const { toast } = useToast();
   const { signer } = useUnisatWallet();
 
@@ -41,18 +40,55 @@ export default function AchievementDialog({
   const handleMint = async () => {
     try {
       setIsMinting(true);
-      await mintSoulboundNFT(signer);
+      if (!window.unisat) {
+        alert('Please install Unisat wallet')
+        return
+      }
+
+      const [address] = await window.unisat.requestAccounts()
+      const pubkey = await window.unisat.getPublicKey()
+
+      const utxos = await window.unisat.getBitcoinUtxos()
+      const utxo = utxos[0]
+
+      const etchTxId = 'e7779d90ce8e70ced6119a4d71fe831ef325e648d7ee7b4823f9973c13d57402'
+
+      const res = await fetch('http://localhost:8000/api/v1/mint-rune', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          address,
+          pubkey,
+          utxo: {
+            txid: utxo.txid,
+            vout: utxo.vout,
+            value: utxo.satoshis,
+            scriptPubKey: utxo.scriptPk
+          },
+          etchTxId
+        })
+      })
+
+      const { psbt } = await res.json()
+
+      const signedPsbt = await window.unisat.signPsbt(psbt, {
+        autoFinalized: true
+      })
+
+      const txid = await window.unisat.pushPsbt(signedPsbt)
+      console.log('Mint transaction broadcasted with txid:', txid)
+
       toast({
         title: "Achievement Unlocked!",
-        description: "Successfully minted your Gold Master Soulbound NFT!",
+        description: "Successfully minted your Rune Token!",
         variant: "default",
       });
       handleClose();
     } catch (error) {
-      console.error("Error minting soulbound NFT:", error);
+      console.error("Error minting  Rune Token :", error);
       toast({
         title: "Error",
-        description: "Failed to mint Soulbound NFT. Please try again.",
+        description: "Failed to mint Rune Token. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -70,7 +106,7 @@ export default function AchievementDialog({
           <div className="text-center mt-4 text-white">
             <p className="text-xl text-white">Congratulations!</p>
             <p className="text-lg mt-2 text-white">You've accumulated {goldAmount} gold!</p>
-            <p className="text-sm mt-4 text-white">Claim your Gold Master NFT to commemorate this achievement.</p>
+            <p className="text-sm mt-4 text-white">Claim your  Rune Token to commemorate this achievement.</p>
           </div>
         </DialogHeader>
         <div className="flex flex-col items-center gap-4 py-4">
@@ -88,7 +124,7 @@ export default function AchievementDialog({
             onClick={handleMint}
             disabled={isMinting}
           >
-            {isMinting ? "Minting..." : "Claim Gold Master NFT"}
+            {isMinting ? "Minting..." : "Claim Rune Token"}
           </Button>
         </div>
       </DialogContent>
