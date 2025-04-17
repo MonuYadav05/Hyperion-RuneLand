@@ -1,0 +1,24 @@
+{
+  "name": "rune-token-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@bitcoinerlab/secp256k1": "^1.2.0",
+    "axios": "^1.8.4",
+    "bip32": "^5.0.0-rc.0",
+    "bitcoinjs-lib": "^6.1.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "ecpair": "^3.0.0",
+    "express": "^5.1.0",
+    "runelib": "^1.0.7",
+    "tiny-secp256k1": "^2.2.3"
+  }
+}
