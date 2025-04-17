@@ -45,22 +45,45 @@ const wallet = new WIFWallet({
   privateKey: privateKey
 })
 
+function getRuneNameAndSpacers (originalName) {
+  let runeName = ''
+  let spacers = 0
+  let index = 0 // tracks position in runeName
+
+  for (let i = 0; i < originalName.length; i++) {
+    const char = originalName[i]
+    if (char === ' ') {
+      // Set bit at current index (spacer goes before next letter)
+      spacers |= 1 << index
+    } else {
+      runeName += char
+      index++ // Only increase when char is not a space
+    }
+  }
+
+  return { runeName, spacers }
+}
 export async function etching (req, res) {
-  const name = 'MONU YADAV'
+  const name = 'HYPERIONRUNE'
 
   const keyPair = wallet.ecPair
 
   const ins = new EtchInscription()
 
   const fee = 2000
+  const HTMLContent = `this token Is Made By Hyperion Team IIT Roorkee in G.C Tech `
 
-  ins.setRune('this rune is made by monu')
+  ins.setContent('text/html;charset=utf-8', Buffer.from(HTMLContent, 'utf8'))
 
   const xOnlyPubkey = Buffer.from(toXOnly(keyPair.publicKey)).toString('hex')
   console.log(xOnlyPubkey)
 
   const etching_script_asm = `${xOnlyPubkey} OP_CHECKSIG`
 
+  const { runeName, spacers } = getRuneNameAndSpacers(name)
+  ins.setRune(name)
+
+  console.log(runeName, spacers)
   const etching_script = Buffer.concat([
     script.fromASM(etching_script_asm),
     ins.encipher()
@@ -80,7 +103,6 @@ export async function etching (req, res) {
     output: etching_script,
     redeemVersion: 192
   }
-  console.log('keypairk', keyPair)
 
   const etching_p2tr = payments.p2tr({
     internalPubkey: Buffer.from(toXOnly(keyPair.publicKey)),
@@ -94,7 +116,7 @@ export async function etching (req, res) {
 
   const utxos = await waitUntilUTXO(address)
   console.log(`Using UTXO ${utxos[0].txid}:${utxos[0].vout}`)
-  console.log(utxos)
+
   const psbt = new Psbt({ network })
 
   psbt.addInput({
@@ -114,7 +136,7 @@ export async function etching (req, res) {
 
   const terms = new Terms(
     1000,
-    10000,
+    100000000,
     new Range(none(), none()),
     new Range(none(), none())
   )
@@ -123,8 +145,8 @@ export async function etching (req, res) {
     some(4),
     some(1000000),
     some(rune),
-    some(16),
-    some('M'),
+    some(1 << 7),
+    some('H'),
     some(terms),
     true
   )

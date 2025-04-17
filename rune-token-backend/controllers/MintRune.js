@@ -42,7 +42,7 @@ export const mintRune = async (req, res) => {
     })
 
     // Calculate and add the change output if applicable
-    const fee = 170 // Set a fee for the transaction
+    const fee = 1000 // Set a fee for the transaction
 
     const change = utxo.value - 546 - fee
     if (change > 0) {
