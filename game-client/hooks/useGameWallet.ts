@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { usePrivyWallet } from './useUnisatWallet';
+import { useUnisatWallet } from './useUnisatWallet';
 import Web3 from 'web3';
 import { ERC20_ABI } from '@/lib/contracts/abi/erc_20';
+import { use } from 'matter';
 
 const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_MINTER;
 
@@ -11,7 +12,7 @@ export function useGameWallet() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const { address, authenticated, signer } = usePrivyWallet();
+  const { address, authenticated, signer } = useUnisatWallet();
 
   useEffect(() => {
     let mounted = true;

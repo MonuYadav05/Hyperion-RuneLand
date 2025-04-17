@@ -1,11 +1,11 @@
 'use client';
 
 import { useGameWallet } from '@/hooks/useGameWallet';
-import { usePrivyWallet } from '@/hooks/useUnisatWallet';
+import { useUnisatWallet } from '@/hooks/useUnisatWallet';
 
 export default function GameWallet() {
   const { balance, isLoading, error } = useGameWallet();
-  const { address } = usePrivyWallet();
+  const { address } = useUnisatWallet();
 
   return (
     <div className="p-4 rounded-lg bg-gray-800 bg-opacity-70 backdrop-blur-sm">

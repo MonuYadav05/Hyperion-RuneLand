@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useBlockchain } from '@/lib/context/BlockchainContext';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
-import { usePrivyWallet } from '@/hooks/useUnisatWallet';
+import { useUnisatWallet } from '@/hooks/useUnisatWallet';
 
 interface AchievementDialogProps {
   isOpen: boolean;
@@ -24,7 +24,7 @@ export default function AchievementDialog({
   const [isMinting, setIsMinting] = useState(false);
   const { mintSoulboundNFT } = useBlockchain();
   const { toast } = useToast();
-  const { signer } = usePrivyWallet();
+  const { signer } = useUnisatWallet();
 
   // Pause game when dialog opens
   useEffect(() => {

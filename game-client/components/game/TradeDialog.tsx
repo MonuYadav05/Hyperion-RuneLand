@@ -14,7 +14,7 @@ import { useLockedNFT } from '@/lib/context/LockedNFTContext';
 import { useToast } from '@/hooks/use-toast';
 import NFTSelectionDialog from './NFTSelectionDialog';
 import BattleScene from './BattleScene';
-import { usePrivyWallet } from '@/hooks/useUnisatWallet';
+import { useUnisatWallet } from '@/hooks/useUnisatWallet';
 
 interface TradeDialogProps {
   isOpen: boolean;
@@ -41,7 +41,7 @@ const npcDialogs = [
 
 export default function TradeDialog({ isOpen, onClose, npcName }: TradeDialogProps) {
   const { mintCustomNFT } = useBlockchain();
-  const {signer} = usePrivyWallet();
+  const {signer} = useUnisatWallet();
   const { lockNFT } = useLockedNFT();
   const { toast } = useToast();
   const [selectedNFT, setSelectedNFT] = useState<number | null>(null);

@@ -76,8 +76,8 @@ export default function CharacterSelectionModal({ isOpen, onClose }: Props) {
         title: "Minting Tokens",
         description: "Please wait while we mint your tokens...",
       });
-      
-      const tokenTx = await mintTokens(signer);
+      //MONU
+      //const tokenTx = await mintTokens(signer);
       
       toast({
         title: "Tokens Minted!",
@@ -89,8 +89,8 @@ export default function CharacterSelectionModal({ isOpen, onClose }: Props) {
         title: "Minting NFTs",
         description: "Please wait while we mint your NFTs...",
       });
-      
-      const nftTx = await mintNFTs(signer);
+      //MONU
+      //const nftTx = await mintNFTs(signer);
       
       toast({
         title: "NFTs Minted!",
