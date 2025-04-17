@@ -69,7 +69,7 @@ const Hero: FC = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-xl md:text-2xl text-[#ccd5ae] max-w-2xl mx-auto leading-relaxed"
           >
-            Chainless Conquests: Where NFTs Battle Across Realms, Rarity Reigns, and Legends are SoulBound.
+            Chainless Conquests: Where Runes Battle Across Realms, Rarity Reigns, and Legends are SoulBound.
           </motion.p>
 
           <motion.div 
