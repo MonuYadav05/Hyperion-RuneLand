@@ -36,15 +36,15 @@ export default function GameWallet() {
 
         <div className="flex-1">
           <div className="text-sm text-gray-400">Token Balance</div>
-          {isLoading?(
+          {isLoading ? (
             <div className="text-2xl font-bold text-white">
               Loading...
             </div>
-          ) :<div className="text-2xl font-bold text-white">
-          {balance.toFixed(2)} CoA
-        </div>}
-            
-          
+          ) : <div className="text-2xl font-bold text-white">
+            {balance} MONUYADAVRUNE
+          </div>}
+
+
           {!address && (
             <div className="text-sm text-gray-400 mt-1">
               Connect wallet to view balance

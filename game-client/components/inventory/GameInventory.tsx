@@ -178,19 +178,19 @@ export default function GameInventory({ onNFTClick }: GameInventoryProps) {
     <div className="w-full h-full p-4">
       <Tabs defaultValue="inventory" className="w-full">
         <TabsList className="w-full grid grid-cols-3 bg-gray-900/50 border border-gray-800 rounded-xl mb-6">
-          <TabsTrigger 
-            value="inventory" 
+          <TabsTrigger
+            value="inventory"
             className="data-[state=active]:bg-gray-800 data-[state=active]:text-white rounded-lg"
           >
             Inventory
           </TabsTrigger>
-          <TabsTrigger 
+          <TabsTrigger
             value="chatbot"
             className="data-[state=active]:bg-gray-800 data-[state=active]:text-white rounded-lg"
           >
             Chatbot
           </TabsTrigger>
-          <TabsTrigger 
+          <TabsTrigger
             value="marketplace"
             className="data-[state=active]:bg-gray-800 data-[state=active]:text-white rounded-lg"
           >
@@ -199,30 +199,30 @@ export default function GameInventory({ onNFTClick }: GameInventoryProps) {
         </TabsList>
         <TabsContent value="inventory" className="w-full">
           <ScrollArea className="h-[calc(100vh-14rem)] w-full">
-          {isGoldTokenMinted ? (
-  <div className="flex justify-center mt-12">
-    <a
-      href={`https://mempool.space/testnet/tx/${txid}`}
-      target="_blank"
-      rel="noreferrer"
-      className="group bg-[#2a221b] border border-[#d4a373]/40 hover:border-[#d4a373] transition-all duration-300 rounded-2xl p-6 max-w-sm w-full shadow-lg cursor-pointer"
-    >
-      <h2 className="text-xl font-bold text-[#e9edc9] mb-2 group-hover:text-[#d4a373] transition">
-        🪙 Monu Yadav Rune
-      </h2>
-      <p className="text-sm text-[#ccd5ae] mb-4">
-        Click to view your token transaction on the mempool explorer.
-      </p>
-      <p className="font-mono text-xs text-[#999] break-all">
-        {txid}
-      </p>
-    </a>
-  </div>
-) : (
-  <div className="text-center p-8 text-gray-400">
-    You need to mint your Gold Rune Token to access the inventory.
-  </div>
-)}
+            {isGoldTokenMinted ? (
+              <div className="flex justify-center mt-12">
+                <a
+                  href={`https://mempool.space/testnet/tx/${txid}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group bg-[#2a221b] border border-[#d4a373]/40 hover:border-[#d4a373] transition-all duration-300 rounded-2xl p-6 max-w-sm w-full shadow-lg cursor-pointer"
+                >
+                  <h2 className="text-xl font-bold text-[#e9edc9] mb-2 group-hover:text-[#d4a373] transition">
+                    🪙 MonuYadavRune
+                  </h2>
+                  <p className="text-sm text-[#ccd5ae] mb-4">
+                    Click to view your token transaction on the mempool explorer.
+                  </p>
+                  <p className="font-mono text-xs text-[#999] break-all">
+                    {txid}
+                  </p>
+                </a>
+              </div>
+            ) : (
+              <div className="text-center p-8 text-gray-400">
+                You need to mint your Gold Rune Token to access the inventory.
+              </div>
+            )}
 
           </ScrollArea>
         </TabsContent>

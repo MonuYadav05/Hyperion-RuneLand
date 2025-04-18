@@ -23,8 +23,8 @@ export default function AchievementDialog({
 }: AchievementDialogProps) {
   const [isMinting, setIsMinting] = useState(false);
   const { toast } = useToast();
-  const { signer, setIsGoldTokenMinted, setTxid,txid } = useUnisatWallet();
-
+  const { signer, setIsGoldTokenMinted, } = useUnisatWallet();
+  const [txid, setTxid] = useState(null);
   // Pause game when dialog opens
   useEffect(() => {
     if (isOpen) {
@@ -78,14 +78,13 @@ export default function AchievementDialog({
       const Tokentxid = await window.unisat.pushPsbt(signedPsbt)
       setTxid(Tokentxid);
       console.log('Mint transaction broadcasted with txid:', Tokentxid)
-
+      window.open(`https://mempool.space/testnet/tx/${Tokentxid}`, '_blank');
       toast({
         title: "Achievement Unlocked!",
         description: "Successfully minted your Rune Token!",
         variant: "default",
       });
       setIsGoldTokenMinted(true);
-      handleClose();
     } catch (error) {
       console.error("Error minting  Rune Token :", error);
       toast({
@@ -129,6 +128,26 @@ export default function AchievementDialog({
             {isMinting ? "Minting..." : "Claim Rune Token"}
           </Button>
         </div>
+        {txid && (
+          <div className="flex justify-center mt-12">
+            <a
+              href={`https://mempool.space/testnet/tx/${txid}`}
+              target="_blank"
+              rel="noreferrer"
+              className="group bg-[#2a221b] border border-[#d4a373]/40 hover:border-[#d4a373] transition-all duration-300 rounded-2xl p-6 max-w-sm w-full shadow-lg cursor-pointer"
+            >
+              <h2 className="text-xl font-bold text-[#e9edc9] mb-2 group-hover:text-[#d4a373] transition">
+                🪙 MonuYadavRune
+              </h2>
+              <p className="text-sm text-[#ccd5ae] mb-4">
+                Click to view your token transaction on the mempool explorer.
+              </p>
+              <p className="font-mono text-xs text-[#999] break-all">
+                {txid}
+              </p>
+            </a>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

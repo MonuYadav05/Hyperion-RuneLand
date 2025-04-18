@@ -312,12 +312,12 @@ const Hero: FC = () => {
 
                     <p className="text-sm text-[#fefae0] font-mono mb-3 break-words">{txid}</p>
 
-                    <p className="text-sm text-[#ccd5ae] mb-3">
+                    {/* <p className="text-sm text-[#ccd5ae] mb-3">
                       ⏱️ Etched on{' '}
                       <time dateTime={new Date(1744914487).toISOString()}>
                         {dayjs(1744914487).format('MMMM D, YYYY h:mm A')}
                       </time>
-                    </p>
+                    </p> */}
 
                     <p className="text-xs text-[#999] font-mono mb-4 break-all">
                       {txid}
