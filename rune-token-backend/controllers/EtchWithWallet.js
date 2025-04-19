@@ -1,17 +1,4 @@
-// routes/etch.js
-import express from 'express'
-import {
-  Etching,
-  EtchInscription,
-  Rune,
-  Runestone,
-  Terms,
-  Range,
-  none,
-  some,
-  RuneId,
-  Edict
-} from 'runelib'
+import { Etching, Rune, Runestone, Terms, Range, none, some } from 'runelib'
 import { Psbt } from 'bitcoinjs-lib'
 import * as bitcoin from 'bitcoinjs-lib'
 
@@ -74,7 +61,7 @@ export const etchWithWallet = async (req, res) => {
       some(parseInt(divisibility)), // divisibility
       some(parseInt(premine)), // premine (fixed for now)
       some(rune),
-      some(1 << 7), // spacers
+      none(), // spacers
       some(symbol),
       some(terms),
       true // mintable

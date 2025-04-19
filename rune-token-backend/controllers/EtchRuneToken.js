@@ -21,24 +21,20 @@ import {
   Etching
 } from 'runelib'
 import { tapleafHash } from 'bitcoinjs-lib/src/payments/bip341.js'
-
-const networkConfig = {
-  networkType: 'testnet'
-  // networkType: "mainnet",
-}
+import { config } from 'dotenv'
 
 import { WIFWallet } from '../utils/WIFWallet.js'
 
 initEccLib(ecc)
+const networkConfig = {
+  networkType: 'testnet'
+}
 
 const ECPair = ECPairFactory(ecc)
 const network = networks.testnet
 const networkType = networkConfig.networkType
 
-// const seed: string = process.env.MNEMONIC as string;
-// const wallet = new SeedWallet({ networkType: networkType, seed: seed });
-
-const privateKey = 'cN2StXMgyXEoMo9y7duYhoNcqXaU28jwj9VMzUfG3gAeKWresNJT'
+const privateKey = process.env.WIF_KEY
 
 const wallet = new WIFWallet({
   networkType: networkType,
@@ -70,7 +66,7 @@ export async function etching (req, res) {
 
   const ins = new EtchInscription()
 
-  const fee = 2000
+  const fee = 1500
   const HTMLContent = `this token Is Made By Hyperion Team IIT Roorkee in G.C Tech `
 
   ins.setContent('text/html;charset=utf-8', Buffer.from(HTMLContent, 'utf8'))
@@ -136,7 +132,7 @@ export async function etching (req, res) {
 
   const terms = new Terms(
     1000,
-    100000000,
+    100000000000000,
     new Range(none(), none()),
     new Range(none(), none())
   )
@@ -145,14 +141,14 @@ export async function etching (req, res) {
     some(4),
     some(1000000),
     some(rune),
-    some(1 << 7),
+    none(),
     some('H'),
     some(terms),
     true
   )
 
   const stone = new Runestone([], some(etching), none(), none())
-
+  console.log('encoded rune', stone.encipher())
   psbt.addOutput({
     script: stone.encipher(),
     value: 0
@@ -224,7 +220,7 @@ export async function waitUntilUTXO (address) {
     intervalId = setInterval(checkForUtxo, 5000)
   })
 }
-// etching()
+etching()
 export async function getTx (id) {
   const response = await blockstream.get(`/tx/${id}/hex`)
   return response.data
