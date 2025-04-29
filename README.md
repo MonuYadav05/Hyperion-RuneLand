@@ -4,6 +4,8 @@
 
 **Hyperion RuneLand** is a 2D decentralized game that runs on the **Bitcoin blockchain** using the **Runes Protocol**. This project explores how fungible tokens can power real-time game mechanics like character customization, in-game economy, and asset trading — all on **Bitcoin**.
 
+![image](https://github.com/user-attachments/assets/321f64c3-6a4a-47da-865a-9d76e8ffe0c2)
+
 > 🔗 Powered by: Node.js, Next.js, HTML5 Canvas, and the Bitcoin Runes Protocol.
 
 ---
